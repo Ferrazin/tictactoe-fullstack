@@ -12,6 +12,7 @@ class Board extends React.Component {
             xIsNext: true,
         }
     }
+
     calculateWinner(squares) {
         const lines = [
           [0, 1, 2],
@@ -44,10 +45,12 @@ class Board extends React.Component {
         });
     }
 
-    handleReset(squares){
-        this.props.saveBoard(squares)
+    handleReset(){
+        this.props.saveBoard(this.state.squares);
+        console.log(this.state.squares)
         return this.setState({
-            squares: Array(9).fill(null)
+            squares: Array(9).fill(null),
+            xIsNext: true
         })
     }
 
