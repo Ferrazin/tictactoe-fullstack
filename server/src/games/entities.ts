@@ -15,8 +15,5 @@ export class Game extends BaseEntity {
   @Column('json', {default: emptyBoard})
   board: Board
 
-  @Column({length:1, nullable: true})
-  winner?: string
-
 }
 
