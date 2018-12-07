@@ -12,11 +12,11 @@ const saveBoardFailed = () => ({
   type: SAVE_BOARD_FAILED
 });
 
-export const saveBoard = squares => dispatch =>
+export const saveGame = (winner, squares) => dispatch =>
   request
     .post(`${baseUrl}/games`)
-    .send(squares)
-    .then(result => dispatch(saveBoardSuccess(result.body)))
+    .send({winner, squares})
+    .then(_ => dispatch(saveBoardSuccess()))
     .catch(err => {
       if (err.status === 400) {
         dispatch(saveBoardFailed(err.response.body.message));
@@ -24,3 +24,4 @@ export const saveBoard = squares => dispatch =>
         console.error(err);
       }
     });
+

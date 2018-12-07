@@ -1,14 +1,15 @@
 import React from "react";
 import Square from "./square";
 import { connect } from "react-redux";
-import { saveBoard } from "../actions/games";
+import { saveGame } from "../actions/games";
 
 class Board extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       squares: Array(9).fill(null),
-      xIsNext: true
+      xIsNext: true,
+      winner: null
     };
   }
 
@@ -39,6 +40,9 @@ class Board extends React.Component {
   handleClick(i) {
     const squares = this.state.squares.slice(); // shallow copy to maintain immutability
     if (this.calculateWinner(squares) || squares[i]) {
+      this.setState({
+        winner: this.calculateWinner(this.state.squares)
+      })
       return;
     }
     squares[i] = this.state.xIsNext ? "X" : "O";
@@ -48,9 +52,9 @@ class Board extends React.Component {
     });
   }
 
-  handleReset() {
+  handleReset(squares) {
     const winner = this.calculateWinner(this.state.squares);
-    this.props.saveBoard(this.state.squares, winner);
+    this.props.saveGame(winner, squares);
     return this.setState({
       squares: Array(9).fill(null),
       xIsNext: true
@@ -96,7 +100,7 @@ class Board extends React.Component {
           {this.renderSquare(7)}
           {this.renderSquare(8)}
         </div>
-        <button className="saveReset" onClick={() => this.handleReset()}>
+        <button className="saveReset" onClick={() => this.handleReset(squares)}>
           SAVE AND RESET
         </button>
       </div>
@@ -109,5 +113,5 @@ const mapStateToProps = state => ({
 });
 export default connect(
   mapStateToProps,
-  { saveBoard }
+  { saveGame }
 )(Board);
